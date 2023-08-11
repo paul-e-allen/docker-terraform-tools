@@ -2,7 +2,7 @@ version: "3"
 services:
   tftools:
     container_name: tftools
-    # image: ghcr.io/paul-e-allen/docker-terraform-tools:latest
+    image: ghcr.io/paul-e-allen/docker-terraform-tools:latest
     build:
       context: .
       args:
