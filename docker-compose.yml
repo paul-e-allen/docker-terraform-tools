@@ -1,0 +1,32 @@
+version: "3"
+services:
+  tftools:
+    container_name: tftools
+    # image: ghcr.io/paul-e-allen/docker-terraform-tools:latest
+    build:
+      context: .
+      args:
+        # For use on Cloud9
+        CONTAINER_USER_NAME: ec2-user
+        CONTAINER_USER_ID: 1000
+        CONTAINER_GROUP_ID: 1000
+        CONTAINER_GROUP_NAME: ec2-user
+    environment:
+      - AWS_PROFILE=CHANGE_ME
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_PAGER=
+      - SSH_AUTH_SOCK=/ssh-agent-sock
+    user: ec2-user
+    networks:
+      - default
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./:/mounted-files
+      - ${HOME}/.aws:/home/ec2-user/.aws
+      - ${HOME}/.ssh/known_hosts:/home/ec2-user/.ssh/known_hosts
+      - ${SSH_AUTH_SOCK}:/ssh-agent-sock
+    working_dir: "/mounted-files"
+networks:
+  default:
+    driver: "bridge"
